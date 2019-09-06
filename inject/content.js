@@ -16,8 +16,8 @@ const ContentManager = {
 		if (!inject) {
 			return;
 		}
-		inject.js && (inject.js = chrome.extension.getURL(`setting/${code}/${inject.js}`));
-		inject.css && (inject.css = chrome.extension.getURL(`setting/${code}/${inject.css}`));
+		inject.js && (inject.js = chrome.extension.getURL(`features/${code}/${inject.js}`));
+		inject.css && (inject.css = chrome.extension.getURL(`features/${code}/${inject.css}`));
 	},
 
 	initListener() {
@@ -42,13 +42,13 @@ const ContentManager = {
 	},
 
 	async loadSettings(callback) {
-		const src = chrome.extension.getURL("setting/SettingManager.js");
+		const src = chrome.extension.getURL("manager/ns-manager.js");
 		const contentMain = await import(src);
 		this.SettingManager = contentMain.default;
 		if (this.SettingManager.initied) {
 			typeof callback === "function" && callback();
 		}
-		this.SettingManager.on("setting-initied", undefined, callback, this);
+		this.SettingManager.on("setting-initied", callback, this);
 	}
 }
 

@@ -125,7 +125,7 @@ const NSManager = {
 
 	/** init user features enabling */
 	async initUserFeatures() {
-		this.userFeatures = await this.storage.get(["features"])
+		this.userFeatures = (await this.storage.get(["features"]) || {}).features
 			|| Object.create(null);
 		for (const code in this.userFeatures) {
 			this.setFeatureEnable(code, this.userFeatures[code].enable);
