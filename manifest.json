@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "TSI Chrome Tools",
+	"version": "1.3.2",
+	"icons": {
+		"128": "./img/128.png"
+	},
+	"browser_action": {
+		"default_icon": "./img/128.png",
+		"default_popup": "./popup/index.htm"
+	},
+	"content_scripts": [{
+		"matches": [
+			"<all_urls>"
+		],
+		"js": ["./inject/content.js"]
+	}],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+	"permissions": ["declarativeContent", "storage"],
+	"web_accessible_resources": [
+		"*.json",
+		"*.js",
+		"*.css"
+	]
+}
