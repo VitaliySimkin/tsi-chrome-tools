@@ -57,7 +57,10 @@ const NSApp = {
 					for (let featureCode in features) {
 						features[featureCode].showDescription = false;
 					}
-					this.features = features;
+					this.features = {};
+					Object.keys(features).sort().forEach(key => {
+						this.features[key] = features[key];
+					}, this);
 				},
 				initFeatures(callback) {
 					let scope = this;
