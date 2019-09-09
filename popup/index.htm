@@ -8,14 +8,14 @@
 	<link rel="stylesheet" href="./index.css">
 </head>
 <body class="light">
-	<span id="ns-main-loading" style="display = 'none'"></span>
+	<span id="ns-main-loading" style="display:none"></span>
 	<div id="app" hidden>
 	<div class="ns-header">
 		<div class="left">
 		</div>
 		<div class="right">
 			<ns-button :active="mode === NSApp.MODE.FeatureList"
-				@click="mode = NSApp.MODE.FeatureList"
+				@click="mode = mode === NSApp.MODE.FeatureList ? null : NSApp.MODE.FeatureList"
 				icon="../img/customer-support.svg"
 				caption="Налаштування"></ns-button>
 		</div>
