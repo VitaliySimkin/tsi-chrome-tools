@@ -2,10 +2,10 @@ import SettingManager from "../manager/ns-manager.js";
 import Vue from "./vue.js";
 
 const NSApp = {
-	MODE: {
-		FeatureList: "FeatureList",
-		ProjectList: "ProjectList",
-		ArchiveList: "ArchiveList"
+	"MODE": {
+		"FeatureList": "FeatureList",
+		"ProjectList": "ProjectList",
+		"ArchiveList": "ArchiveList"
 	},
 	/** Инициализировать приложение
 	 * @param {HTMLElement} elem елемент для загрузки приложения
@@ -13,29 +13,32 @@ const NSApp = {
 	init(elem) {
 		// eslint-disable-next-line no-undef
 		this.vue = new Vue({
-			el: elem,
+			"el": elem,
 			data() {
 				return {
-					NSApp: NSApp,
-					features: {},
-					mode: NSApp.MODE.FeatureList
+					"NSApp": NSApp,
+					"features": {},
+					"mode": NSApp.MODE.FeatureList,
 				};
 			},
-			watch: {},
-			methods: {
+			"watch": {},
+			"methods": {
 				changeActive(code) {
 					SettingManager.setFeatureEnable(code, !this.features[code].enable);
 				},
+
 				initDarkSide() {
 					this.setDarkSide();
 					SettingManager.on("enableChange", function(code) {
 						if (code === "dark-side") this.setDarkSide();
 					}, this);
 				},
+
 				setDarkSide() {
 					let isEnable = SettingManager.isEnable("dark-side");
 					document.body.className = isEnable ? "dark" : "light";
 				},
+
 				getRow(target) {
 					let el = target;
 					while (el) {
@@ -45,6 +48,7 @@ const NSApp = {
 						el = el.parentElement;
 					}
 				},
+
 				showDescription(feature, event) {
 					let row = this.getRow(event.target);
 					if (row) row.scrollIntoViewIfNeeded();
@@ -52,7 +56,8 @@ const NSApp = {
 						if (row) row.scrollIntoViewIfNeeded();
 					}.bind(this), 300);
 					feature.showDescription = !feature.showDescription;
-				}, 
+				},
+
 				setFeatures(features) {
 					for (let featureCode in features) {
 						features[featureCode].showDescription = false;
@@ -62,6 +67,7 @@ const NSApp = {
 						this.features[key] = features[key];
 					}, this);
 				},
+
 				initFeatures(callback) {
 					let scope = this;
 					if (SettingManager.initied) {
@@ -74,7 +80,7 @@ const NSApp = {
 					}, this);
 				}
 			},
-			computed: {},
+			"computed": {},
 			mounted() {
 				let scope = this;
 				this.initFeatures(function() {
@@ -87,24 +93,26 @@ const NSApp = {
 
 
 Vue.component("ns-button-menu-item", {
-	props: ["icon", "caption"],
-	data() {return {};},
-	template: "<li>{{caption}}</li>"
+	"props": ["icon", "caption"],
+	data() {
+		return {};
+	},
+	"template": "<li>{{caption}}</li>"
 });
 
 Vue.component("ns-button", {
-	props: ["active", "icon", "caption", "size"],
+	"props": ["active", "icon", "caption", "size"],
 	data() {
 		return {
-			showsubmenu: false
+			"showsubmenu": false
 		};
 	},
-	methods: {
+	"methods": {
 		onclick(event) {
 			this.$emit("click", event);
 		}
 	},
-	template: `<div class="ns-button" :size="size" :active="active"
+	"template": `<div class="ns-button" :size="size" :active="active"
 		@click="onclick($event)">
 		<span v-if="icon" class="icon"
 			:style="'background-image: url(' + icon +')'"></span>
@@ -113,21 +121,21 @@ Vue.component("ns-button", {
 });
 
 Vue.component("ns-switch", {
-	props: ["value"],
+	"props": ["value"],
 	data() {
 		return {};
 	},
-	template: `<input type="checkbox" class="toggle-switch"
+	"template": `<input type="checkbox" class="toggle-switch"
 		:checked="value" @change="$emit('change', $event.target.checked)"></input>`
 });
 
 
 Vue.component("ns-feature", {
-	props: ["feature"],
+	"props": ["feature"],
 	data() {
 		return {};
 	},
-	template: `<span class="ns-button" :active="active" @click="$emit('click', $event.target.value)">
+	"template": `<span class="ns-button" :active="active" @click="$emit('click', $event.target.value)">
 		<span v-if="icon" class="ns-button-icon" :style="'background-image: url(' + icon + ')'"></span>
 		<span v-if="caption" class="ns-button-caption">{{caption}}</span>
 	</span>`
