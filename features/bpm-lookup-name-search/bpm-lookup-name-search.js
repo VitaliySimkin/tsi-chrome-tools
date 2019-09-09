@@ -4,7 +4,85 @@
 	}
 
 	function getRequestBody() {
-		return `{"rootSchemaName":"SysSchema","operationType":0,"filters":{"items":{"ExtendParentFilter":{"filterType":1,"comparisonType":3,"isEnabled":true,"trimDateTimeParameterToDate":false,"leftExpression":{"expressionType":0,"columnPath":"ExtendParent"},"rightExpression":{"expressionType":2,"parameter":{"dataValueType":1,"value":false}}}},"logicalOperation":0,"isEnabled":true,"filterType":6},"columns":{"items":{"Id":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Id"}},"UId":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"UId"}},"Name":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Name"}}}},"isDistinct":false,"rowCount":-1,"rowsOffset":-1,"isPageable":false,"allColumns":false,"useLocalization":true,"useRecordDeactivation":false,"serverESQCacheParameters":{"cacheLevel":0,"cacheGroup":"","cacheItemName":""},"queryOptimize":false,"useMetrics":false,"querySource":0,"ignoreDisplayValues":false,"isHierarchical":false}`;
+		return {
+			"rootSchemaName": "SysSchema",
+			"operationType": 0,
+			"filters": {
+				"items": {
+					"ExtendParentFilter": {
+						"filterType": 1,
+						"comparisonType": 3,
+						"isEnabled": true,
+						"trimDateTimeParameterToDate": false,
+						"leftExpression": {
+							"expressionType": 0,
+							"columnPath": "ExtendParent"
+						},
+						"rightExpression": {
+							"expressionType": 2,
+							"parameter": {
+								"dataValueType": 1,
+								"value": false
+							}
+						}
+					}
+				},
+				"logicalOperation": 0,
+				"isEnabled": true,
+				"filterType": 6
+			},
+			"columns": {
+				"items": {
+					"Id": {
+						"caption": "",
+						"orderDirection": 0,
+						"orderPosition": -1,
+						"isVisible": true,
+						"expression": {
+							"expressionType": 0,
+							"columnPath": "Id"
+						}
+					},
+					"UId": {
+						"caption": "",
+						"orderDirection": 0,
+						"orderPosition": -1,
+						"isVisible": true,
+						"expression": {
+							"expressionType": 0,
+							"columnPath": "UId"
+						}
+					},
+					"Name": {
+						"caption": "",
+						"orderDirection": 0,
+						"orderPosition": -1,
+						"isVisible": true,
+						"expression": {
+							"expressionType": 0,
+							"columnPath": "Name"
+						}
+					}
+				}
+			},
+			"isDistinct": false,
+			"rowCount": -1,
+			"rowsOffset": -1,
+			"isPageable": false,
+			"allColumns": false,
+			"useLocalization": true,
+			"useRecordDeactivation": false,
+			"serverESQCacheParameters": {
+				"cacheLevel": 0,
+				"cacheGroup": "",
+				"cacheItemName": ""
+			},
+			"queryOptimize": false,
+			"useMetrics": false,
+			"querySource": 0,
+			"ignoreDisplayValues": false,
+			"isHierarchical": false
+		};
 	}
 
 	function getRequestParams(body) {
