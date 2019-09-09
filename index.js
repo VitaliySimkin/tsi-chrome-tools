@@ -25,7 +25,8 @@ const NSManager = {
         let feature = this.getFeature(code);
         feature.title
         _l
-	}
+	},
+	langs: Object.create(null)
 };
 
 export default NSManager;

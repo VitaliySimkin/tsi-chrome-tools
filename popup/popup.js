@@ -5,7 +5,8 @@ const NSApp = {
 	"MODE": {
 		"FeatureList": "FeatureList",
 		"ProjectList": "ProjectList",
-		"ArchiveList": "ArchiveList"
+		"ArchiveList": "ArchiveList",
+		"LangList": "LangList"
 	},
 	"lang": {
 		"ru": "ru",
@@ -14,13 +15,16 @@ const NSApp = {
 	},
 	"lczString": {
 		"ru": {
-			"IndexHtmlSettingsCaption": "Настройки"
+			"IndexHtmlSettingsCaption": "Настройки",
+			"IndexHtmlLangsCaption": "Язык"
 		},
 		"ua": {
-			"IndexHtmlSettingsCaption": "Налаштування"
+			"IndexHtmlSettingsCaption": "Налаштування",
+			"IndexHtmlLangsCaption": "Мова"
 		},
 		"en": {
-			"IndexHtmlSettingsCaption": "Settings"
+			"IndexHtmlSettingsCaption": "Settings",
+			"IndexHtmlLangsCaption": "Language"
 		}
 	},
 	/** Инициализировать приложение
