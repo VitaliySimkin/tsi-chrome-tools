@@ -1,4 +1,4 @@
-(function() {
+(async function() {
 	function replace() {
 		let baseLoadData = Terrasoft.ComboBox.prototype.loadData;
 		Terrasoft.ComboBox.prototype.loadData = function(data) {
@@ -14,26 +14,18 @@
 		return match && match[2];
 	};
 
-	const request = `{"rootSchemaName":"SysSchema","operationType":0,"filters":{"items":{"ExtendParentFilter":{"filterType":1,"comparisonType":3,"isEnabled":true,"trimDateTimeParameterToDate":false,"leftExpression":{"expressionType":0,"columnPath":"ExtendParent"},"rightExpression":{"expressionType":2,"parameter":{"dataValueType":1,"value":false}}}},"logicalOperation":0,"isEnabled":true,"filterType":6},"columns":{"items":{"Id":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Id"}},"UId":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"UId"}},"Name":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Name"}}}},"isDistinct":false,"rowCount":-1,"rowsOffset":-1,"isPageable":false,"allColumns":false,"useLocalization":true,"useRecordDeactivation":false,"serverESQCacheParameters":{"cacheLevel":0,"cacheGroup":"","cacheItemName":""},"queryOptimize":false,"useMetrics":false,"querySource":0,"ignoreDisplayValues":false,"isHierarchical":false}`;
-	const xhr = new XMLHttpRequest();
-	xhr.open("POST", "../DataService/json/SyncReply/SelectQuery", true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.setRequestHeader("BPMCSRF", getCoockie("BPMCSRF"));
-	xhr.setRequestHeader("Timestamp", new Date(Date.now()).toISOString());
-	xhr.setRequestHeader("X-Request-Source", "ajax-provider");
-	xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-	xhr.onreadystatechange = function(params) {
-		if (this.readyState === 4) {
-			const statusCode = params.status;
-			try {
-				let resp = JSON.parse(this.responseText);
-				let rows = resp.rows;
-				window.simkData = rows;
-				replace();
-			} catch (err) {
-				console.warn(err);
-			}
-		}
-	};
-	xhr.send(request);
+	const body = `{"rootSchemaName":"SysSchema","operationType":0,"filters":{"items":{"ExtendParentFilter":{"filterType":1,"comparisonType":3,"isEnabled":true,"trimDateTimeParameterToDate":false,"leftExpression":{"expressionType":0,"columnPath":"ExtendParent"},"rightExpression":{"expressionType":2,"parameter":{"dataValueType":1,"value":false}}}},"logicalOperation":0,"isEnabled":true,"filterType":6},"columns":{"items":{"Id":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Id"}},"UId":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"UId"}},"Name":{"caption":"","orderDirection":0,"orderPosition":-1,"isVisible":true,"expression":{"expressionType":0,"columnPath":"Name"}}}},"isDistinct":false,"rowCount":-1,"rowsOffset":-1,"isPageable":false,"allColumns":false,"useLocalization":true,"useRecordDeactivation":false,"serverESQCacheParameters":{"cacheLevel":0,"cacheGroup":"","cacheItemName":""},"queryOptimize":false,"useMetrics":false,"querySource":0,"ignoreDisplayValues":false,"isHierarchical":false}`;
+	const response = await fetch("../DataService/json/SyncReply/SelectQuery", {
+		"method": "POST",
+		"headers": {
+			"Content-Type": "application/json",
+			"BPMCSRF": getCoockie("BPMCSRF"),
+			"Timestamp": new Date().toISOString(),
+			"X-Request-Source": "ajax-provider",
+		},
+		body
+	});
+	const parsed = await response.json();
+	window.simkData = parsed.rows;
+	replace();
 })()
