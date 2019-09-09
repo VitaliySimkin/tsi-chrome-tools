@@ -1,9 +1,9 @@
-(async function() {
+(async function(global) {
 	function replace() {
 		let baseLoadData = Terrasoft.ComboBox.prototype.loadData;
 		Terrasoft.ComboBox.prototype.loadData = function(data) {
 			if (this.columnName === "ReferenceSchemaUId") {
-				data.forEach(item => item[1] = window.simkData.find(r => r.UId === item[0]).Name || item[1]);
+				data.forEach(item => item[1] = global.simkData.find(r => r.UId === item[0]).Name || item[1]);
 			}
 			baseLoadData.apply(this, arguments);
 		};
@@ -26,6 +26,6 @@
 		body
 	});
 	const parsed = await response.json();
-	window.simkData = parsed.rows;
+	global.simkData = parsed.rows;
 	replace();
-})()
+})(window)
