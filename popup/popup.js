@@ -7,6 +7,11 @@ const NSApp = {
 		"ProjectList": "ProjectList",
 		"ArchiveList": "ArchiveList"
 	},
+	"lang": {
+		"ru": "ru",
+		"ua": "ua",
+		"en": "en"
+	},
 	/** Инициализировать приложение
 	 * @param {HTMLElement} elem елемент для загрузки приложения
 	 */
@@ -19,6 +24,7 @@ const NSApp = {
 					"NSApp": NSApp,
 					"features": {},
 					"mode": NSApp.MODE.FeatureList,
+					"lang": NSApp.lang.ru
 				};
 			},
 			"watch": {},
