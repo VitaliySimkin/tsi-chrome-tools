@@ -85,6 +85,10 @@ const NSApp = {
 					this.lang = lang.code;
 				},
 
+				isLang(lang) {
+					return this.lang === lang.code;
+				},
+
 				changeActive(code) {
 					SettingManager.setFeatureEnable(code, !this.features[code].enable);
 				},

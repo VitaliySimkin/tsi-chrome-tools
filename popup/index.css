@@ -107,6 +107,10 @@ body {
 	float: right;
 	margin-right: 7px;
   }
+  .ns-selected-language {
+	  background-color: #409EFF;
+	  color: #c6e2ff;
+  }
   input[type=checkbox].toggle-switch {
 	-webkit-appearance: none;
 	width: 50px;
