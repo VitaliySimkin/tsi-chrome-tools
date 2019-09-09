@@ -110,7 +110,10 @@
 		const baseLoadData = Terrasoft.ComboBox.prototype.loadData;
 		Terrasoft.ComboBox.prototype.loadData = function(data) {
 			if (this.columnName === "ReferenceSchemaUId") {
-				data.forEach(item => item[1] = global.simkData.schemaNames.find(r => r.UId === item[0]).Name || item[1]);
+				data.forEach(item => {
+					const simkData = global.simkData.schemaNames.find(r => r.UId === item[0]);
+					item[1] = simkData && simkData.Name || item[1];
+				});
 			}
 			baseLoadData.apply(this, arguments);
 		};
