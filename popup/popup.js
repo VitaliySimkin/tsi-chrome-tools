@@ -1,6 +1,6 @@
 import SettingManager from "../manager/ns-manager.js";
 import Vue from "./vue.js";
-
+// test
 const NSApp = {
 	MODE: {
 		FeatureList: "FeatureList",
