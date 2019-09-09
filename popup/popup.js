@@ -12,6 +12,17 @@ const NSApp = {
 		"ua": "ua",
 		"en": "en"
 	},
+	"lczString": {
+		"ru": {
+			"IndexHtmlSettingsCaption": "Настройки"
+		},
+		"ua": {
+			"IndexHtmlSettingsCaption": "Налаштування"
+		},
+		"en": {
+			"IndexHtmlSettingsCaption": "Settings"
+		}
+	},
 	/** Инициализировать приложение
 	 * @param {HTMLElement} elem елемент для загрузки приложения
 	 */
@@ -24,11 +35,33 @@ const NSApp = {
 					"NSApp": NSApp,
 					"features": {},
 					"mode": NSApp.MODE.FeatureList,
-					"lang": NSApp.lang.ru
+					"lang": NSApp.lang.ru,
+					"defLang": NSApp.lang.ru
 				};
 			},
 			"watch": {},
 			"methods": {
+				getLczValue(code) {
+					const lzcString = NSApp.lczString;
+					return lzcString[this.lang][code] || lzcString[this.defLang][code] || "";
+				},
+
+				getFeatureTitle(feature) {
+					const featTitle = feature.title;
+					if (typeof featTitle === "string") {
+						return featTitle;
+					}
+					return featTitle[this.lang] || featTitle[this.defLang] || featTitle[Object.keys(featTitle)[0]] || "";
+				},
+
+				getFeatureDescriptionText(feature) {
+					const featDescr = feature.description.text;
+					if (typeof featDescr === "string") {
+						return featDescr;
+					}
+					return featDescr[this.lang] || featDescr[this.defLang] || featDescr[Object.keys(featDescr)[0]] || "";
+				},
+
 				changeActive(code) {
 					SettingManager.setFeatureEnable(code, !this.features[code].enable);
 				},
@@ -36,7 +69,9 @@ const NSApp = {
 				initDarkSide() {
 					this.setDarkSide();
 					SettingManager.on("enableChange", function(code) {
-						if (code === "dark-side") this.setDarkSide();
+						if (code === "dark-side") {
+							this.setDarkSide();
+						}
 					}, this);
 				},
 
@@ -57,9 +92,13 @@ const NSApp = {
 
 				showDescription(feature, event) {
 					let row = this.getRow(event.target);
-					if (row) row.scrollIntoViewIfNeeded();
+					if (row) {
+						row.scrollIntoViewIfNeeded();
+					}
 					setTimeout(function() {
-						if (row) row.scrollIntoViewIfNeeded();
+						if (row) {
+							row.scrollIntoViewIfNeeded();
+						}
 					}.bind(this), 300);
 					feature.showDescription = !feature.showDescription;
 				},
