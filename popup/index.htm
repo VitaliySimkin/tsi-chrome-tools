@@ -45,8 +45,10 @@
 			</div>
 		</div>
 		<div v-else-if="mode === NSApp.MODE.LangList">
-			<div v-for="(lang, code) in ">
-
+			<div v-for="(lang, code) in langs" :key="code" class="ns-row-cnt">
+				<div class="ns-feature-prop" @click="setLanguage(lang, $event)">
+					<div class="ns-feature-title">{{lang.caption}}</div>
+				</div>
 			</div>
 		</div>
 	</div>

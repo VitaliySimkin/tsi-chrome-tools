@@ -9,9 +9,18 @@ const NSApp = {
 		"LangList": "LangList"
 	},
 	"lang": {
-		"ru": "ru",
-		"ua": "ua",
-		"en": "en"
+		"ru": {
+			"code": "ru",
+			"caption": "Русский"
+		},
+		"ua": {
+			"code": "ua",
+			"caption": "Українська"
+		},
+		"en": {
+			"code": "en",
+			"caption": "English"
+		},
 	},
 	"lczString": {
 		"ru": {
@@ -38,9 +47,10 @@ const NSApp = {
 				return {
 					"NSApp": NSApp,
 					"features": {},
+					"langs": {},
 					"mode": NSApp.MODE.FeatureList,
-					"lang": NSApp.lang.ru,
-					"defLang": NSApp.lang.ru
+					"lang": NSApp.lang.ru.code,
+					"defLang": NSApp.lang.ru.code
 				};
 			},
 			"watch": {},
@@ -64,6 +74,15 @@ const NSApp = {
 						return featDescr;
 					}
 					return featDescr[this.lang] || featDescr[this.defLang] || featDescr[Object.keys(featDescr)[0]] || "";
+				},
+
+				initLanguages() {
+					this.langs = JSON.parse(JSON.stringify(NSApp.lang));
+				},
+
+				setLanguage(lang, event) {
+					const row = this.getRow(event.target);
+					this.lang = lang.code;
 				},
 
 				changeActive(code) {
@@ -95,7 +114,7 @@ const NSApp = {
 				},
 
 				showDescription(feature, event) {
-					let row = this.getRow(event.target);
+					const row = this.getRow(event.target);
 					if (row) {
 						row.scrollIntoViewIfNeeded();
 					}
@@ -131,10 +150,10 @@ const NSApp = {
 			},
 			"computed": {},
 			mounted() {
-				let scope = this;
-				this.initFeatures(function() {
-					scope.initDarkSide();
+				this.initFeatures(() => {
+					this.initDarkSide();
 				});
+				this.initLanguages();
 			}
 		});
 	}
