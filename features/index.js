@@ -5,7 +5,8 @@ export default [
 	"bpm-package-sort",
 	"bpm-parent-name",
 	"jira-epic-filter",
-	"jira-resizable"
+	"jira-resizable",
+	"bpm-lookup-name-search"
 ];
 
 
