@@ -150,6 +150,10 @@ const NSApp = {
 						scope.setFeatures(SettingManager.features);
 						callback();
 					}, this);
+				},
+
+				onFeatureConfigClick(feature, event) {
+					
 				}
 			},
 			"computed": {},

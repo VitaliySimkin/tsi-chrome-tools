@@ -30,6 +30,8 @@
 				<div class="ns-feature-prop">
 					<div class="ns-feature-title"><span>{{getFeatureTitle(feature)}}</span></div>
 					<div class="ns-feature-action">
+						<span @click="onFeatureConfigClick(feature, $event)" class="icon"
+							style="background-image: url('../img/config-gear.svg')"></span>
 						<ns-button size="small" v-if="!!feature.description"
 							:active="feature.showDescription"
 							@click="showDescription(feature, $event)"
