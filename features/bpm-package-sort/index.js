@@ -1,12 +1,16 @@
 export default {
-	title: "BPM. Сортування пакетів в конфігурації",
-	inject: {
-		forBpmDev: true,
-		js: "bpm-package-sort.js"
+	"title": {
+		"ru": "BPM. Сортировка пакетов в конфигурации",
+		"ua": "BPM. Сортування пакетів в конфігурації",
+		"en": "BPM. Sort packages in configuration"
 	},
-	description: {
-		screen: "bpm-package-sort.png",
-		code: `let sortPriority = [
+	"inject": {
+		"forBpmDev": true,
+		"js": "bpm-package-sort.js"
+	},
+	"description": {
+		"screen": "bpm-package-sort.png",
+		"code": `let sortPriority = [
 	item.IsChanged,
 	item.IsContentChanged,
 	item.Name === "TsiBase",
@@ -16,6 +20,10 @@ export default {
 	item.Maintainer !== "Terrasoft",
 	other
 ];`,
-		text: ""
+		"text": {
+			"ru": "BPM. Сортировка пакетов в конфигурации",
+			"ua": "BPM. Сортування пакетів в конфігурації",
+			"en": "BPM. Sort packages in configuration"
+		}
 	}
 };

@@ -1,8 +1,16 @@
 export default {
-	title: "Extension. Dark side",
-	enable: false,
-	description: {
-		screen: "dark.png",
-		text: "COME TO THE DARK SIDE"
+	"title": {
+		"ru": "Расширение. Тёмная тема",
+		"ua": "Розширення. Темна тема",
+		"en": "Extension. Dark side"
+	},
+	"enable": false,
+	"description": {
+		"screen": "dark.png",
+		"text": {
+			"ru": "Расширение. Тёмная тема",
+			"ua": "Розширення. Темна тема",
+			"en": "Extension. Dark side"
+		}
 	}
 };

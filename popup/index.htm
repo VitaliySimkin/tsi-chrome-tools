@@ -8,36 +8,47 @@
 	<link rel="stylesheet" href="./index.css">
 </head>
 <body class="light">
-	<span id="ns-main-loading" style="display = 'none'"></span>
+	<span id="ns-main-loading" style="display:none"></span>
 	<div id="app" hidden>
 	<div class="ns-header">
 		<div class="left">
 		</div>
 		<div class="right">
-			<ns-button :active="mode === NSApp.MODE.FeatureList"
-				@click="mode = NSApp.MODE.FeatureList"
+			<ns-button :active="mode === NSApp.MODE.LangList"
+				@click="mode = mode === NSApp.MODE.LangList ? null : NSApp.MODE.LangList"
 				icon="../img/customer-support.svg"
-				caption="Налаштування"></ns-button>
+				:caption="getLczValue('IndexHtmlLangsCaption')"></ns-button>
+			<ns-button :active="mode === NSApp.MODE.FeatureList"
+				@click="mode = mode === NSApp.MODE.FeatureList ? null : NSApp.MODE.FeatureList"
+				icon="../img/customer-support.svg"
+				:caption="getLczValue('IndexHtmlSettingsCaption')"></ns-button>
 		</div>
 	</div>
 	<div class="ns-content">
 		<div v-if="mode === NSApp.MODE.FeatureList" id="ns-feature-list-cnt">
 			<div v-for="(feature, code) in features" :key="code" class="ns-row-cnt">
 				<div class="ns-feature-prop">
-					<div class="ns-feature-title"><span>{{feature.title}}</span></div>
+					<div class="ns-feature-title"><span>{{getFeatureTitle(feature)}}</span></div>
 					<div class="ns-feature-action">
-						<ns-button size="small" v-if="feature.description"
+						<ns-button size="small" v-if="!!feature.description"
 							:active="feature.showDescription"
 							@click="showDescription(feature, $event)"
 							icon="../img/information.svg"></ns-button>
 						<ns-switch v-model="feature.enable" @change="changeActive(feature.code)"></ns-switch>
 					</div>
 				</div>
-				<span v-if="feature.showDescription && feature.description" class="ns-feature-description">
+				<span v-if="!!feature.showDescription && !!feature.description" class="ns-feature-description">
 					<span v-if="feature.description.screen" class="screen"><img :src="`../features/${feature.code}/${feature.description.screen}`"/></span>
-					<span v-if="feature.description.text" class="text">{{feature.description.text}}</span>
+					<span v-if="feature.description.text" class="text">{{getFeatureDescriptionText(feature)}}</span>
 					<span v-if="feature.description.code" class="code">{{feature.description.code}}</span>
 				</span>
+			</div>
+		</div>
+		<div v-else-if="mode === NSApp.MODE.LangList">
+			<div v-for="(lang, code) in langs" :key="code" class="ns-row-cnt">
+				<div class="ns-feature-prop" v-bind:class="{ 'ns-selected-language': isLang(lang)}" @click="setLanguage(lang, $event)">
+					<div class="ns-feature-title">{{lang.caption}}</div>
+				</div>
 			</div>
 		</div>
 	</div>
