@@ -87,12 +87,24 @@ const NSApp = {
 				},
 
 				setLanguage(lang, event) {
-					const row = this.getRow(event.target);
+					// const row = this.getRow(event.target);
 					this.lang = lang.code;
+					const localStorageKey = this.getLanguageStorageKey();
+					window.NSManager.storage.set({[localStorageKey]: this.lang});
 				},
 
-				isLang(lang) {
+				isCurrentLang(lang) {
 					return this.lang === lang.code;
+				},
+
+				async setCurrentLanguage() {
+					const localStorageKey = this.getLanguageStorageKey();
+					const currentLang = (await window.NSManager.storage.get([localStorageKey]) || {})[localStorageKey];
+					this.lang = currentLang || this.defLang;
+				},
+
+				getLanguageStorageKey() {
+					return "tsi-chrome-tools-current-language";
 				},
 
 				changeActive(code) {
@@ -204,6 +216,7 @@ const NSApp = {
 					this.initDarkSide();
 				});
 				this.initLanguages();
+				this.setCurrentLanguage();
 			}
 		});
 	}
