@@ -80,6 +80,7 @@
 			if (feature.inject.css) {
 				this.loadCss(feature.inject.css);
 			}
+			window.localStorage.setItem(`tsi-chrome-tools-${feature.code}-custom-config`, JSON.stringify(feature.customConfig));
 		}
 	};
 	TsiHelpToolsInjectManager.init();
