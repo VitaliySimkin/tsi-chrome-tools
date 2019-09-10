@@ -172,6 +172,10 @@ const NSApp = {
 					}, this);
 				},
 
+				getLangIconPath() {
+					const langCode = this.lang || this.defLang || null;
+					return langCode ? `../img/flag-${langCode}.svg` : "../img/customer-support.svg";
+        },
 				showCustomConfig(feature, event) {
 					const row = this.getRow(event.target);
 					if (row) {
