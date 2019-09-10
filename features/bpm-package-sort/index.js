@@ -25,5 +25,16 @@ export default {
 			"ua": "BPM. Сортування пакетів в конфігурації",
 			"en": "BPM. Sort packages in configuration"
 		}
+	},
+	"customConfig": {
+		"sortPriority": `[
+	(item = {IsChanged: false}) => item.IsChanged,
+	(item = {IsContentChanged: false}) => item.IsContentChanged,
+	(item = {Name: ""}) => item.Name === "TsiBase",
+	(item = {Name: ""}) => item.Name.startsWith("TsiBase"),
+	(item = {Name: ""}) => item.Name.startsWith("Tsi"),
+	(item = {Name: ""}) => item.Name.startsWith("Ts"),
+	(item = {Maintainer: ""}) => item.Maintainer !== "Terrasoft"
+]`
 	}
 };
