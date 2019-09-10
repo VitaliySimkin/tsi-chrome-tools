@@ -84,16 +84,16 @@ const NSApp = {
 					// const row = this.getRow(event.target);
 					this.lang = lang.code;
 					const localStorageKey = this.getLanguageStorageKey();
-					window.localStorage.setItem(localStorageKey, this.lang);
+					window.NSManager.storage.set({[localStorageKey]: this.lang});
 				},
 
 				isCurrentLang(lang) {
 					return this.lang === lang.code;
 				},
 
-				setCurrentLanguage() {
+				async setCurrentLanguage() {
 					const localStorageKey = this.getLanguageStorageKey();
-					const currentLang = window.localStorage.getItem(localStorageKey);
+					const currentLang = (await window.NSManager.storage.get([localStorageKey]) || {})[localStorageKey];
 					this.lang = currentLang || this.defLang;
 				},
 
