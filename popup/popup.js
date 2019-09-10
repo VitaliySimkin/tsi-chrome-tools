@@ -150,6 +150,11 @@ const NSApp = {
 						scope.setFeatures(SettingManager.features);
 						callback();
 					}, this);
+				},
+
+				getLangIconPath() {
+					const langCode = this.lang || this.defLang || null;
+					return langCode ? `../img/flag-${langCode}.svg` : "../img/customer-support.svg";
 				}
 			},
 			"computed": {},

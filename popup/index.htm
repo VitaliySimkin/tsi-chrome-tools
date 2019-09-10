@@ -16,7 +16,7 @@
 		<div class="right">
 			<ns-button :active="mode === NSApp.MODE.LangList"
 				@click="mode = mode === NSApp.MODE.LangList ? null : NSApp.MODE.LangList"
-				icon="../img/customer-support.svg"
+				:icon="getLangIconPath()"
 				:caption="getLczValue('IndexHtmlLangsCaption')"></ns-button>
 			<ns-button :active="mode === NSApp.MODE.FeatureList"
 				@click="mode = mode === NSApp.MODE.FeatureList ? null : NSApp.MODE.FeatureList"
