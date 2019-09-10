@@ -81,11 +81,11 @@ const NSApp = {
 				},
 
 				setLanguage(lang, event) {
-					const row = this.getRow(event.target);
+					// const row = this.getRow(event.target);
 					this.lang = lang.code;
 				},
 
-				isLang(lang) {
+				isCurrentLang(lang) {
 					return this.lang === lang.code;
 				},
 
