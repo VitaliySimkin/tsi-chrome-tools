@@ -25,15 +25,18 @@ const NSApp = {
 	"lczString": {
 		"ru": {
 			"IndexHtmlSettingsCaption": "Настройки",
-			"IndexHtmlLangsCaption": "Язык"
+			"IndexHtmlLangsCaption": "Язык",
+			"CustomConfigWillNotBeSavedErrorMsg": "Пользовательская настройка не будет сохранена"
 		},
 		"ua": {
 			"IndexHtmlSettingsCaption": "Налаштування",
-			"IndexHtmlLangsCaption": "Мова"
+			"IndexHtmlLangsCaption": "Мова",
+			"CustomConfigWillNotBeSavedErrorMsg": "Призначена для користувача установка не буде збережена"
 		},
 		"en": {
 			"IndexHtmlSettingsCaption": "Settings",
-			"IndexHtmlLangsCaption": "Language"
+			"IndexHtmlLangsCaption": "Language",
+			"CustomConfigWillNotBeSavedErrorMsg": "Custom config will not be saved"
 		}
 	},
 	/** Инициализировать приложение
@@ -50,7 +53,8 @@ const NSApp = {
 					"langs": {},
 					"mode": NSApp.MODE.FeatureList,
 					"lang": NSApp.lang.ru.code,
-					"defLang": NSApp.lang.ru.code
+					"defLang": NSApp.lang.ru.code,
+					"customConfigDebouncedFn": null
 				};
 			},
 			"watch": {},
@@ -133,6 +137,8 @@ const NSApp = {
 				setFeatures(features) {
 					for (let featureCode in features) {
 						features[featureCode].showDescription = false;
+						features[featureCode].showCustomConfig = false;
+						features[featureCode].customConfigJson = "{}";
 					}
 					this.features = {};
 					Object.keys(features).sort().forEach(key => {
@@ -152,8 +158,47 @@ const NSApp = {
 					}, this);
 				},
 
-				onFeatureConfigClick(feature, event) {
-					
+				showCustomConfig(feature, event) {
+					const row = this.getRow(event.target);
+					if (row) {
+						row.scrollIntoViewIfNeeded();
+					}
+					setTimeout(function() {
+						if (row) {
+							row.scrollIntoViewIfNeeded();
+						}
+					}.bind(this), 300);
+					feature.showCustomConfig = !feature.showCustomConfig;
+					if (feature.showCustomConfig) {
+						feature.customConfigJson = JSON.stringify(feature.customConfig, null, 4);
+					}
+				},
+
+				createDebounceFunction(fn, time) {
+					let timeout;
+					return function() {
+						const functionCall = () => fn.apply(this, arguments);
+						clearTimeout(timeout);
+						timeout = setTimeout(functionCall, time);
+					}
+				},
+
+				onCustomConfigInput(feature) {
+					if (this.customConfigDebouncedFn == null) {
+						this.customConfigDebouncedFn = this.createDebounceFunction(async json => {
+							let config = null;
+							try {
+								config = JSON.parse(json);
+								feature.customConfig = config;
+								await window.NSManager.storage.set({[`tsi-chrome-tools-${feature.code}-custom-config`]: config});
+							} catch (e) {
+								console.error(e);
+								alert(this.getLczValue("CustomConfigWillNotBeSavedErrorMsg"));
+							}
+							this.customConfigDebouncedFn = null;
+						}, 1000);
+					}
+					this.customConfigDebouncedFn(feature.customConfigJson);
 				}
 			},
 			"computed": {},
