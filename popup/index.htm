@@ -48,8 +48,10 @@
 				</span>
 				<textarea v-if="!!feature.showCustomConfig"
 					v-model="feature.customConfigJson"
-					@input="onCustomConfigInput(feature)"
 					class="ns-feature-description" cols="30" rows="10"></textarea>
+				<button v-if="!!feature.showCustomConfig"
+					class="ns-button ns-feature-custom-config-save-button"
+					@click="onCustomConfigSave(feature)">{{getLczValue("CustomConfigSaveButtonCaption")}}</button>
 			</div>
 		</div>
 		<div v-else-if="mode === NSApp.MODE.LangList">

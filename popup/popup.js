@@ -26,17 +26,20 @@ const NSApp = {
 		"ru": {
 			"IndexHtmlSettingsCaption": "Настройки",
 			"IndexHtmlLangsCaption": "Язык",
-			"CustomConfigWillNotBeSavedErrorMsg": "Пользовательская настройка не будет сохранена"
+			"CustomConfigWillNotBeSavedErrorMsg": "Пользовательская настройка не будет сохранена",
+			"CustomConfigSaveButtonCaption": "Сохранить"
 		},
 		"ua": {
 			"IndexHtmlSettingsCaption": "Налаштування",
 			"IndexHtmlLangsCaption": "Мова",
-			"CustomConfigWillNotBeSavedErrorMsg": "Призначена для користувача установка не буде збережена"
+			"CustomConfigWillNotBeSavedErrorMsg": "Призначена для користувача установка не буде збережена",
+			"CustomConfigSaveButtonCaption": "Зберегти"
 		},
 		"en": {
 			"IndexHtmlSettingsCaption": "Settings",
 			"IndexHtmlLangsCaption": "Language",
-			"CustomConfigWillNotBeSavedErrorMsg": "Custom config will not be saved"
+			"CustomConfigWillNotBeSavedErrorMsg": "Custom config will not be saved",
+			"CustomConfigSaveButtonCaption": "Save"
 		}
 	},
 	/** Инициализировать приложение
@@ -53,8 +56,7 @@ const NSApp = {
 					"langs": {},
 					"mode": NSApp.MODE.FeatureList,
 					"lang": NSApp.lang.ru.code,
-					"defLang": NSApp.lang.ru.code,
-					"customConfigDebouncedFn": null
+					"defLang": NSApp.lang.ru.code
 				};
 			},
 			"watch": {},
@@ -183,22 +185,17 @@ const NSApp = {
 					}
 				},
 
-				onCustomConfigInput(feature) {
-					if (this.customConfigDebouncedFn == null) {
-						this.customConfigDebouncedFn = this.createDebounceFunction(async json => {
-							let config = null;
-							try {
-								config = JSON.parse(json);
-								feature.customConfig = config;
-								await window.NSManager.storage.set({[`tsi-chrome-tools-${feature.code}-custom-config`]: config});
-							} catch (e) {
-								console.error(e);
-								alert(this.getLczValue("CustomConfigWillNotBeSavedErrorMsg"));
-							}
-							this.customConfigDebouncedFn = null;
-						}, 1000);
+				async onCustomConfigSave(feature) {
+					let config = null;
+					const json = feature.customConfigJson;
+					try {
+						config = JSON.parse(json);
+						feature.customConfig = config;
+						await window.NSManager.storage.set({[`tsi-chrome-tools-${feature.code}-custom-config`]: config});
+					} catch (e) {
+						console.error(e);
+						alert(this.getLczValue("CustomConfigWillNotBeSavedErrorMsg"));
 					}
-					this.customConfigDebouncedFn(feature.customConfigJson);
 				}
 			},
 			"computed": {},
