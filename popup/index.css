@@ -266,4 +266,8 @@ body {
   ::-webkit-scrollbar-thumb:hover {
 	background: #888 !important;
   }
+  .ns-feature-custom-config-save-button {
+	  margin-top: 0.5em;
+	  background-color: #6edc6e;
+  }
   /* #endregion */

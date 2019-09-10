@@ -25,15 +25,21 @@ const NSApp = {
 	"lczString": {
 		"ru": {
 			"IndexHtmlSettingsCaption": "Настройки",
-			"IndexHtmlLangsCaption": "Язык"
+			"IndexHtmlLangsCaption": "Язык",
+			"CustomConfigWillNotBeSavedErrorMsg": "Пользовательская настройка не будет сохранена",
+			"CustomConfigSaveButtonCaption": "Сохранить"
 		},
 		"ua": {
 			"IndexHtmlSettingsCaption": "Налаштування",
-			"IndexHtmlLangsCaption": "Мова"
+			"IndexHtmlLangsCaption": "Мова",
+			"CustomConfigWillNotBeSavedErrorMsg": "Призначена для користувача установка не буде збережена",
+			"CustomConfigSaveButtonCaption": "Зберегти"
 		},
 		"en": {
 			"IndexHtmlSettingsCaption": "Settings",
-			"IndexHtmlLangsCaption": "Language"
+			"IndexHtmlLangsCaption": "Language",
+			"CustomConfigWillNotBeSavedErrorMsg": "Custom config will not be saved",
+			"CustomConfigSaveButtonCaption": "Save"
 		}
 	},
 	/** Инициализировать приложение
@@ -81,12 +87,24 @@ const NSApp = {
 				},
 
 				setLanguage(lang, event) {
-					const row = this.getRow(event.target);
+					// const row = this.getRow(event.target);
 					this.lang = lang.code;
+					const localStorageKey = this.getLanguageStorageKey();
+					window.NSManager.storage.set({[localStorageKey]: this.lang});
 				},
 
-				isLang(lang) {
+				isCurrentLang(lang) {
 					return this.lang === lang.code;
+				},
+
+				async setCurrentLanguage() {
+					const localStorageKey = this.getLanguageStorageKey();
+					const currentLang = (await window.NSManager.storage.get([localStorageKey]) || {})[localStorageKey];
+					this.lang = currentLang || this.defLang;
+				},
+
+				getLanguageStorageKey() {
+					return "tsi-chrome-tools-current-language";
 				},
 
 				changeActive(code) {
@@ -133,6 +151,8 @@ const NSApp = {
 				setFeatures(features) {
 					for (let featureCode in features) {
 						features[featureCode].showDescription = false;
+						features[featureCode].showCustomConfig = false;
+						features[featureCode].customConfigJson = "{}";
 					}
 					this.features = {};
 					Object.keys(features).sort().forEach(key => {
@@ -155,6 +175,43 @@ const NSApp = {
 				getLangIconPath() {
 					const langCode = this.lang || this.defLang || null;
 					return langCode ? `../img/flag-${langCode}.svg` : "../img/customer-support.svg";
+        },
+				showCustomConfig(feature, event) {
+					const row = this.getRow(event.target);
+					if (row) {
+						row.scrollIntoViewIfNeeded();
+					}
+					setTimeout(function() {
+						if (row) {
+							row.scrollIntoViewIfNeeded();
+						}
+					}.bind(this), 300);
+					feature.showCustomConfig = !feature.showCustomConfig;
+					if (feature.showCustomConfig) {
+						feature.customConfigJson = JSON.stringify(feature.customConfig, null, 4);
+					}
+				},
+
+				createDebounceFunction(fn, time) {
+					let timeout;
+					return function() {
+						const functionCall = () => fn.apply(this, arguments);
+						clearTimeout(timeout);
+						timeout = setTimeout(functionCall, time);
+					}
+				},
+
+				async onCustomConfigSave(feature) {
+					let config = null;
+					const json = feature.customConfigJson;
+					try {
+						config = JSON.parse(json);
+						feature.customConfig = config;
+						await window.NSManager.storage.set({[`tsi-chrome-tools-${feature.code}-custom-config`]: config});
+					} catch (e) {
+						console.error(e);
+						alert(this.getLczValue("CustomConfigWillNotBeSavedErrorMsg"));
+					}
 				}
 			},
 			"computed": {},
@@ -163,6 +220,7 @@ const NSApp = {
 					this.initDarkSide();
 				});
 				this.initLanguages();
+				this.setCurrentLanguage();
 			}
 		});
 	}

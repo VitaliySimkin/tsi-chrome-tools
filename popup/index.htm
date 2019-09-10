@@ -30,6 +30,10 @@
 				<div class="ns-feature-prop">
 					<div class="ns-feature-title"><span>{{getFeatureTitle(feature)}}</span></div>
 					<div class="ns-feature-action">
+						<ns-button size="small" v-if="!!feature.customConfig"
+							:active="feature.showCustomConfig"
+							@click="showCustomConfig(feature, $event)"
+							icon="../img/config-gear.svg"></ns-button>
 						<ns-button size="small" v-if="!!feature.description"
 							:active="feature.showDescription"
 							@click="showDescription(feature, $event)"
@@ -42,11 +46,17 @@
 					<span v-if="feature.description.text" class="text">{{getFeatureDescriptionText(feature)}}</span>
 					<span v-if="feature.description.code" class="code">{{feature.description.code}}</span>
 				</span>
+				<textarea v-if="!!feature.showCustomConfig"
+					v-model="feature.customConfigJson"
+					class="ns-feature-description" cols="30" rows="10"></textarea>
+				<button v-if="!!feature.showCustomConfig"
+					class="ns-button ns-feature-custom-config-save-button"
+					@click="onCustomConfigSave(feature)">{{getLczValue("CustomConfigSaveButtonCaption")}}</button>
 			</div>
 		</div>
 		<div v-else-if="mode === NSApp.MODE.LangList">
 			<div v-for="(lang, code) in langs" :key="code" class="ns-row-cnt">
-				<div class="ns-feature-prop" v-bind:class="{ 'ns-selected-language': isLang(lang)}" @click="setLanguage(lang, $event)">
+				<div class="ns-feature-prop" v-bind:class="{ 'ns-selected-language': isCurrentLang(lang)}" @click="setLanguage(lang, $event)">
 					<div class="ns-feature-title">{{lang.caption}}</div>
 				</div>
 			</div>

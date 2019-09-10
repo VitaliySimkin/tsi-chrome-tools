@@ -90,10 +90,11 @@ const NSManager = {
 	 * @param {string} code feature code
 	 * @param {NSFeature} config feature config
 	 */
-	defineFeature(code, config = {}) {
+	defineFeature(code, config = {}, customFeatureConfig = {}) {
 		config = JSON.parse(JSON.stringify(config));
 		config.code = code;
 		config.enable = !(config.enable === false);
+		config.customConfig = { ...config.customConfig, ...customFeatureConfig };
 		this.features[code] = config;
 	},
 
@@ -143,8 +144,12 @@ const NSManager = {
 	 * @param {string} featureCode feature code
 	 */
 	async initFeature(featureCode) {
-		let imported = await import(`../features/${featureCode}/index.js`);
-		this.defineFeature(featureCode, imported.default);
+		const featureCustomConfigStorageCode = `tsi-chrome-tools-${featureCode}-custom-config`;
+		const [imported, customConfig] = await Promise.all([
+			import(`../features/${featureCode}/index.js`),
+			window.NSManager.storage.get([featureCustomConfigStorageCode])
+		]);
+		this.defineFeature(featureCode, imported.default, customConfig[featureCustomConfigStorageCode] || {});
 	},
 
 	/** Save feature enabling
