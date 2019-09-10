@@ -9,10 +9,14 @@ export default [
 	"bpm-lookup-name-search"
 ];
 
-
+/** @typedef {Object} locale
+ * @property {string} ua українська локалізація
+ * @property {string} ru русская локализация
+ * @property {string} en english localization
+ */
 /**
  * @typedef {object} NSFeatureConfig
- * @property {string} title заголовок фичи
+ * @property {locale} title заголовок фичи
  * @property {boolean} [enable=true] включена ли фича
  * 
  * @property {?object} inject налаштування скриптів та стилів які будуть додаватись на сторінку
@@ -23,7 +27,7 @@ export default [
  * @property {?string} inject.css назва файлу з стилями для додавання на сторінку
  * 
  * @property {object} description опис
- * @property {string} description.text текст
+ * @property {locale} description.text текст
  * @property {string} description.code код для відображення
  * @property {string} description.screen файл з зображенням
  * 
