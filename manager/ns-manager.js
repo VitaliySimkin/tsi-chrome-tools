@@ -91,7 +91,6 @@ const NSManager = {
 	 * @param {NSFeature} config feature config
 	 */
 	defineFeature(code, config = {}, customFeatureConfig = {}) {
-		console.log(code, customFeatureConfig);
 		config = JSON.parse(JSON.stringify(config));
 		config.code = code;
 		config.enable = !(config.enable === false);
