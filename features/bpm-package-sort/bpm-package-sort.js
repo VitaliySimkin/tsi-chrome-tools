@@ -18,7 +18,9 @@
 			}
 			baseOnLoad.apply(this, arguments);
 		};
-		window.PackageTree.onRefreshPage(true)
+		if (window.PackageTree && typeof window.PackageTree.onRefreshPage === "function") {
+			window.PackageTree.onRefreshPage(true);
+		}
 	} catch (err) {
 		console.error(err);
 	}
