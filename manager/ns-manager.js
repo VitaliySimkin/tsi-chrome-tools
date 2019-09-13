@@ -19,12 +19,12 @@ import NSStorage from "./ns-storage.js";
 const NSManager = {
 	// #region common methods
 	/** Feature and user settings is initied */
-	initied: false,
+	"initied": false,
 
 	/** Хранилище
 	 * @type {NSStorage}
 	 */
-	storage: NSStorage,
+	"storage": NSStorage,
 
 	/** Init manager */
 	async init() {
@@ -126,8 +126,8 @@ const NSManager = {
 
 	/** init user features enabling */
 	async initUserFeatures() {
-		this.userFeatures = (await this.storage.get(["features"]) || {}).features
-			|| Object.create(null);
+		this.userFeatures = (await this.storage.get(["features"]) || {}).features ||
+			Object.create(null);
 		for (const code in this.userFeatures) {
 			this.setFeatureEnable(code, this.userFeatures[code].enable);
 		}
