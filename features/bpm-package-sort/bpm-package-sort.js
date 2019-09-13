@@ -4,6 +4,7 @@
 		const sortPriority = eval(customConfig.sortPriority) || [
 			(item = {IsChanged: false}) => item.IsChanged,
 			(item = {IsContentChanged: false}) => item.IsContentChanged,
+			(item = {SysRepository_Name: ""}) => !!item.SysRepository_Name,
 			(item = {Name: ""}) => item.Name === "TsiBase",
 			(item = {Name: ""}) => item.Name.startsWith("TsiBase"),
 			(item = {Name: ""}) => item.Name.startsWith("Tsi"),
@@ -14,7 +15,14 @@
 		const baseOnLoad = Terrasoft.DataSource.prototype.onLoadResponse;
 		Terrasoft.DataSource.prototype.onLoadResponse = function() {
 			if (this.id === "SysPackageDataSource" && Array.isArray(arguments[0])) {
-				arguments[0] = arguments[0].sort((itemA, itemB) => itemSortPriority(itemA) - itemSortPriority(itemB));
+				arguments[0] = arguments[0].sort((itemA, itemB) => (itemSortPriority(itemA) - itemSortPriority(itemB)) ||
+					((itemA['SysRepository_Name'] || "") > (itemB['SysRepository_Name'] || "")
+						? 1
+						: (itemA['SysRepository_Name'] || "") < (itemB['SysRepository_Name'] || "")
+							? -1
+							: 0
+					)
+				);
 			}
 			baseOnLoad.apply(this, arguments);
 		};
