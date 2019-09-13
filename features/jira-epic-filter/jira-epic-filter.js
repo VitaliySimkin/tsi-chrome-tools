@@ -3,16 +3,16 @@
 	 * @class
 	 * Класс добавляюший плюшки в jira
 	 */
-	var TsiJiraUtils = {
-		_epicFilterBtn: null,
-		_clearEpicFilterBtn: null,
-		_epicsMenuCnt: null,
-		_lastIssuesList: null,
-		_lastEtag: null,
-		_epicsFilterStyle: ``,
+	let TsiJiraUtils = {
+		"_epicFilterBtn": null,
+		"_clearEpicFilterBtn": null,
+		"_epicsMenuCnt": null,
+		"_lastIssuesList": null,
+		"_lastEtag": null,
+		"_epicsFilterStyle": ``,
 
-		_overridenMethods: {},
-		_epics: [],
+		"_overridenMethods": {},
+		"_epics": [],
 
 		/** Инициализация */
 		init() {
@@ -46,14 +46,13 @@
 		 */
 		loadEpicList(callback, scope) {
 			// #TODO #BUG Грузится вся информация по backlog. Нужно придумать как загружать только перечень епиков
-			var u = {
-				url: "/xboard/plan/backlog/data.json",
-				data: {
-					rapidViewId: window.GH.RapidBoard.State.data.rapidViewId,
-					selectedProjectKey: window.GH.RapidBoard.projectKey
+			window.GH.Ajax.get({
+				"url": "/xboard/plan/backlog/data.json",
+				"data": {
+					"rapidViewId": window.GH.RapidBoard.State.data.rapidViewId,
+					"selectedProjectKey": window.GH.RapidBoard.projectKey
 				}
-			};
-			window.GH.Ajax.get(u, "backlogDataModel").done(function(response) {
+			}, "backlogDataModel").done(function(response) {
 				TsiJiraUtils._epics = response.epicData.epics.filter(epic => !epic.hidden);
 				callback && callback.call(scope, TsiJiraUtils._epics);
 			});
@@ -83,7 +82,7 @@
 				TsiJiraUtils._lastEtag = arguments[0].etagData.etag;
 				TsiJiraUtils._lastIssuesList = arguments[0].issuesData.issues;
 			}
-			if (TsiJiraUtils.getSelectedEpicsId().length > 0) {
+			if (TsiJiraUtils.getSelectedEpicsId().length) {
 				arguments[0].issuesData.issues = arguments[0].issuesData.issues.filter(
 					issue => TsiJiraUtils.getSelectedEpicsId().includes(issue.epic));
 			}
@@ -105,9 +104,9 @@
 			let activeFilterClass = "tsi-jira-epics-filterActive";
 			epic.isTsiSelected = Boolean(isSelected);
 			this.saveSelectedEpics();
-			epic.isTsiSelected ?
-				epic.domEl.classList.add(activeFilterClass) :
-				epic.domEl.classList.remove(activeFilterClass);
+			epic.isTsiSelected
+				? epic.domEl.classList.add(activeFilterClass)
+				: epic.domEl.classList.remove(activeFilterClass);
 			this.updateEpicFilterBtnStyle();
 		},
 
@@ -124,7 +123,7 @@
 		},
 
 		addEpicFilterButton() {
-			var epicCnt = document.createElement("dd");
+			let epicCnt = document.createElement("dd");
 			this._epicFilterBtn = document.createElement("button");
 			this._epicFilterBtn.classList.value = "tsi-jira-epics-filter-btn";
 			this._epicFilterBtn.innerText = "Epics";
@@ -149,7 +148,7 @@
 				let epic = this._epics.find(item => item.key === selectedId);
 				epic && this.setEpicIsSelected(epic, true);
 			}, this);
-			if (selectedIds.length > 0) {
+			if (selectedIds.length) {
 				this.reloadSprintIssues();
 			}
 		},
@@ -176,9 +175,9 @@
 
 		updateEpicFilterBtnStyle() {
 			let activeFilterClass = "tsi-jira-epics-filterActive";
-			var isAnyEpicSelected = this.getSelectedEpics().length > 0;
-			var filterMenuIsShowed =  TsiJiraUtils._epicsMenuCnt.style.display === "block";
-			var haveClass = this._epicFilterBtn.classList.contains(activeFilterClass);
+			let isAnyEpicSelected = this.getSelectedEpics().length > 0;
+			let filterMenuIsShowed =  TsiJiraUtils._epicsMenuCnt.style.display === "block";
+			let haveClass = this._epicFilterBtn.classList.contains(activeFilterClass);
 			if (isAnyEpicSelected || filterMenuIsShowed) {
 				!haveClass && this._epicFilterBtn.classList.add(activeFilterClass);
 			} else {
@@ -191,9 +190,9 @@
 				return;
 			}
 			let btnClientRect = TsiJiraUtils._epicFilterBtn.getBoundingClientRect();
-			var top = btnClientRect.top + btnClientRect.height + "px";
-			var left = btnClientRect.left + "px";
-			var isDisplayed = TsiJiraUtils._epicsMenuCnt.style.display === "block"; 
+			let top = btnClientRect.top + btnClientRect.height + "px";
+			let left = btnClientRect.left + "px";
+			let isDisplayed = TsiJiraUtils._epicsMenuCnt.style.display === "block"; 
 			TsiJiraUtils._epicsMenuCnt.style.display = isDisplayed ? "none" : "block";
 			TsiJiraUtils._epicsMenuCnt.style.top = top;
 			TsiJiraUtils._epicsMenuCnt.style.left = left;
@@ -237,6 +236,7 @@
 			let quickfilters = document.getElementById("js-work-quickfilters");
 			quickfilters.insertBefore(filterDD, quickfilters.firstChild.nextSibling);
 		},
+		
 		addInputListeners(input) {
 			input.addEventListener("keyup", (event) => {
 				if (event.keyCode === 13) {
