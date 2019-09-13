@@ -1,7 +1,7 @@
 (function() {
 	try {
 		const customConfig = JSON.parse(window.localStorage.getItem("tsi-chrome-tools-bpm-package-sort-custom-config"));
-		const sortPriority = eval(customConfig.sortPriority) || [
+		const sortPriority = eval(customConfig && customConfig.sortPriority || null) || [
 			(item = {IsChanged: false}) => item.IsChanged,
 			(item = {IsContentChanged: false}) => item.IsContentChanged,
 			(item = {Name: ""}) => item.Name === "TsiBase",
