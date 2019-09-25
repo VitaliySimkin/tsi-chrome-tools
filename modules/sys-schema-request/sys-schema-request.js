@@ -1,3 +1,8 @@
+/**
+ * Выполняет запрос в SysSchema, чтобы получить Id,
+ * UId и Name всех незамещающих схем в конфигурации.
+ */
+
 function getData() {
 	function getRequestBody() {
 		return {
