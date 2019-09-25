@@ -2,6 +2,9 @@ import getSchemaNames from "../../modules/sys-schema-request/sys-schema-request.
 
 (async function() {
 	const schemaInfo = await getSchemaNames();
+	if (!SchemaComboBoxEdit || !SchemaComboBoxEdit.store || !SchemaComboBoxEdit.store.data) {
+		return;
+	}
 	SchemaComboBoxEdit.store.data.on("add", function(index, value, key) {
 		const schemaInfoObject = schemaInfo.find(x => value && value.data && x.Id === value.data.value || false);
 		if (!schemaInfoObject || schemaInfoObject.Name === value.data.text) {
