@@ -30,6 +30,7 @@ export default {
 		"sortPriority": `[
 	(item = {IsChanged: false}) => item.IsChanged,
 	(item = {IsContentChanged: false}) => item.IsContentChanged,
+	(item = {SysRepository_Name: ""}) => !!item.SysRepository_Name,
 	(item = {Name: ""}) => item.Name === "TsiBase",
 	(item = {Name: ""}) => item.Name.startsWith("TsiBase"),
 	(item = {Name: ""}) => item.Name.startsWith("Tsi"),
