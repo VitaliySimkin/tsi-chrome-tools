@@ -7,8 +7,9 @@ export default [
 	"jira-epic-filter",
 	"jira-resizable",
 	"bpm-lookup-name-search",
-    "bpm-package-data-name-search",
-    "bpm-open-page-script"
+	"bpm-package-data-name-search",
+	"bpm-open-page-script",
+	"bpm-schema-name-search"
 ];
 
 /** @typedef {Object} locale
